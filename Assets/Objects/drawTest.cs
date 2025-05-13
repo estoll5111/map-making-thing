@@ -11,6 +11,7 @@ public class drawTest : MonoBehaviour
     Vector3 mousePos;
     Vector3 worldMousePos;
     public RaycastHit hit;
+     public GameObject drawSphere; 
 
     public KeyCode draw = KeyCode.Mouse0;
     private void Awake()
@@ -37,14 +38,13 @@ public class drawTest : MonoBehaviour
             Debug.Log("mousebutton0 down");
                 Ray ray = new Ray(Camera.main.ScreenPointToRay(mousePos).origin, Camera.main.ScreenPointToRay(Input.mousePosition).direction);
                 if (Physics.Raycast(ray, out hit, Mathf.Infinity)){
+                    GameObject drawn = Instantiate(drawSphere, hit.point, Quaternion.identity, transform);
                     Debug.DrawLine(ray.origin, hit.point, Color.red, 1.0f);
-                   // Debug.Log(hit.point.z);
                 } 
 
         }
         mousePos.z = hit.point.z;
         Vector3 worldMousePos = Camera.main.ScreenToWorldPoint(mousePos);
         transform.position = worldMousePos;
-        Debug.Log(hit.point.z);
     }
 }

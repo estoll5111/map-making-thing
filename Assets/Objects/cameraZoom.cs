@@ -12,14 +12,14 @@ public class cameraZoom : MonoBehaviour
     Vector3 cameraPos;
     void Start()
     {
-        
+      //  transform.position = cameraStartPos;
     }
 
     // Update is called once per frame
     void Update()
     {
-        cameraPos = transform.position;
-        mouseScroll = Input.mouseScrollDelta;
-        transform.position = Vector3.Lerp(cameraPos, cameraPos*mouseScroll, 0.1f);
+        //cameraPos = transform.position;
+        //mouseScroll = Input.mouseScrollDelta;
+       // transform.position = Vector3.Lerp(cameraPos, cameraPos*mouseScroll, 0.1f);
     }
 }

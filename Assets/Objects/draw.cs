@@ -7,6 +7,7 @@ public class draw : MonoBehaviour
 {
 
     public GameObject drawSphere; 
+    public GameObject parent;
     private Vector3 mousePos;
     // Start is called before the first frame update
     void Start()
@@ -18,10 +19,14 @@ public class draw : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        RaycastHit hit;
-        Ray ray = new Ray(Camera.main.ScreenPointToRay(mousePos).origin, Camera.main.ScreenPointToRay(mousePos).direction);
+        mousePos = Input.mousePosition;
+
+       /* RaycastHit hit;
+        Ray ray = new Ray(Camera.main.ScreenPointToRay(mousePos).origin, Camera.main.ScreenPointToRay(Input.mousePosition).direction);
         if (Physics.Raycast(ray, out hit, Mathf.Infinity)){
-            GameObject drawn = Instantiate(drawSphere, hit.point, Quaternion.identity);
-        }
+            GameObject drawn = Instantiate(drawSphere, hit.point, Quaternion.identity, transform.parent);
+            Debug.DrawLine(ray.origin, hit.point, Color.green, 1.0f);
+            Debug.Log("hit");
+        } */
     }
 }
