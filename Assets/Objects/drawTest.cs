@@ -20,7 +20,7 @@ public class drawTest : MonoBehaviour
         mousePos = Input.mousePosition;
         mousePos.z = Camera.main.nearClipPlane;
         Vector3 worldMousePos = Camera.main.ScreenToWorldPoint(mousePos);
-        transform.position = worldMousePos;
+        //transform.position = worldMousePos;
     }
     void Start()
     {
