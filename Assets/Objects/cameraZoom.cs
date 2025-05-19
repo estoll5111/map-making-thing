@@ -1,25 +1,33 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 
 public class cameraZoom : MonoBehaviour
 {
-    // Start is called before the first frame update
-
-    Vector2 mouseScroll;
-    Vector3 cameraStartPos = new Vector3(0,0,-2.3f);
-
-    Vector3 cameraPos;
-    void Start()
-    {
-      //  transform.position = cameraStartPos;
+  // Start is called before the first frame update
+  public float startingFOV = 54.5f;
+  public float maxFOV = 80.4f;
+  public float minFOV = 1;
+  public float FOV;
+  void Start()
+  {
+    FOV = Camera.main.fieldOfView;
+    Camera.main.fieldOfView = startingFOV;
     }
 
-    // Update is called once per frame
-    void Update()
+  // Update is called once per frame
+  void Update()
+  {
+    if (Input.GetAxis("Mouse ScrollWheel") > 0f)
     {
-        //cameraPos = transform.position;
-        //mouseScroll = Input.mouseScrollDelta;
-       // transform.position = Vector3.Lerp(cameraPos, cameraPos*mouseScroll, 0.1f);
+      FOV--;
+    }
+    else if (Input.GetAxis("Mouse ScrollWheel") < 0f)
+    {
+      FOV++;
+    }
+
+    Camera.main.fieldOfView = FOV;
     }
 }
