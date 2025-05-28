@@ -1,6 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 using Unity.Mathematics;
+using Unity.VisualScripting;
+using UnityEditor.Rendering;
 using UnityEngine;
 
 public class MatController : MonoBehaviour
@@ -13,11 +16,12 @@ public class MatController : MonoBehaviour
     public Material baseMaterial;
     private Material sphereMat;
     public float scale;
+    public drawTest undotest;
 
-    public List<GameObject> undo;
+
     void Start()
     {
-
+        undotest.GetComponent<drawTest>();
     }
 
     // Update is called once per frame
@@ -46,12 +50,20 @@ public class MatController : MonoBehaviour
     public void back()
     {
         int y = 0;
-        Debug.Log("Attempting to destroy " + undo.Count + " objects.");
-        for (int x = undo.Count; x > 0; x--)
+        Debug.Log("Attempting to destroy " + undotest.testMult[undotest.testMult.Count - 1].Count + " objects.");
+        if (undotest.testMult.Count == 1)
         {
-            Destroy(undo[x]);
+            Debug.Log("There is nothing drawn, canceling undo");
+            //does not work need to fix
+            return;
+        }
+        for (int x = undotest.testMult[undotest.testMult.Count - 1].Count - 1; x >= 0; x--)
+        {
+            Destroy(undotest.testMult[undotest.testMult.Count - 1][x]);
             y++;
         }
         Debug.Log("Destroyed " + y + " objects");
+        undotest.testMult.RemoveAt(undotest.testMult.Count - 1);
+        undotest.undoLists--;
     }
 }
