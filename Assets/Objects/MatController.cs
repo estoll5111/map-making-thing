@@ -45,7 +45,7 @@ public class MatController : MonoBehaviour
     public void resetRotation()
     {
         globe.transform.rotation = new Quaternion(0, 0, 0, 1);
-    }
+    } 
 
     public void back()
     {
