@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Net.Sockets;
 using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
@@ -18,6 +19,7 @@ public class drawTest : MonoBehaviour
     public List<List<GameObject>> testMult = new List<List<GameObject>>(1);
 
     public int undoLists = 0;
+
 
 
     public KeyCode draw = KeyCode.Mouse0;
@@ -39,7 +41,7 @@ public class drawTest : MonoBehaviour
         testMult.Add(new List<GameObject>());
     }
 
-    
+
     // Update is called once per frame
     void Update()
     {
@@ -50,7 +52,6 @@ public class drawTest : MonoBehaviour
             if (Physics.Raycast(ray, out hit, Mathf.Infinity))
             {
                 GameObject drawn = Instantiate(drawSphere, hit.point, Quaternion.identity, transform);
-                //undo.Add(drawn);
                 testMult[undoLists].Add(drawn);
                 drawn.transform.LookAt(transform.position);
                 Debug.DrawLine(ray.origin, hit.point, Color.red, 1.0f);
@@ -66,6 +67,6 @@ public class drawTest : MonoBehaviour
         testMult.Add(new List<GameObject>());
         undoLists++;
         Debug.Log(testMult.Count + " lists of lists");
-
     }
+
 }
