@@ -45,7 +45,7 @@ public class MatController : MonoBehaviour
     public void resetRotation()
     {
         globe.transform.rotation = new Quaternion(0, 0, 0, 1);
-    } 
+    }
 
     public void back()
     {
@@ -65,5 +65,18 @@ public class MatController : MonoBehaviour
         Debug.Log("Destroyed " + y + " objects");
         undotest.testMult.RemoveAt(undotest.testMult.Count - 1);
         undotest.undoLists--;
+    }
+
+    public void Delete(bool torf)
+    {
+        if (torf)
+        {
+            Debug.Log("Erasing");
+            undotest.erasing = true;
+        }
+        else
+        {
+            undotest.erasing = false;
+        }
     }
 }

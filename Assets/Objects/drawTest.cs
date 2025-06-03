@@ -21,8 +21,8 @@ public class drawTest : MonoBehaviour
     public int undoLists = 0;
 
 
-
     public KeyCode draw = KeyCode.Mouse0;
+    public bool erasing; 
 
     private void Awake()
     {
@@ -31,6 +31,9 @@ public class drawTest : MonoBehaviour
         mousePos.z = Camera.main.nearClipPlane;
         Vector3 worldMousePos = Camera.main.ScreenToWorldPoint(mousePos);
         transform.position = worldMousePos;
+
+
+
     }
     void Start()
     {
@@ -45,19 +48,28 @@ public class drawTest : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        
         mousePos = Input.mousePosition;
-        if (Input.GetKey(draw))
+        if (!erasing)
         {
-            Ray ray = new Ray(Camera.main.ScreenPointToRay(mousePos).origin, Camera.main.ScreenPointToRay(Input.mousePosition).direction);
-            if (Physics.Raycast(ray, out hit, Mathf.Infinity))
+            if (Input.GetKey(draw))
             {
-                GameObject drawn = Instantiate(drawSphere, hit.point, Quaternion.identity, transform);
-                testMult[undoLists].Add(drawn);
-                drawn.transform.LookAt(transform.position);
-                Debug.DrawLine(ray.origin, hit.point, Color.red, 1.0f);
+                LayerMask mask = LayerMask.GetMask("Globe");
+                Ray ray = new Ray(Camera.main.ScreenPointToRay(mousePos).origin, Camera.main.ScreenPointToRay(Input.mousePosition).direction);
+                if (Physics.Raycast(ray, out hit, Mathf.Infinity, mask))
+                {
+                    GameObject drawn = Instantiate(drawSphere, hit.point, Quaternion.identity, transform);
+                    testMult[undoLists].Add(drawn);
+                    drawn.transform.LookAt(transform.position);
+                    Debug.DrawLine(ray.origin, hit.point, Color.red, 1.0f);
+                }
             }
+            else drawing = false;
         }
-        else drawing = false;
+        else
+        {
+            erase();
+        }
         mousePos.z = hit.point.z;
         Vector3 worldMousePos = Camera.main.ScreenToWorldPoint(mousePos);
         transform.position = worldMousePos;
@@ -67,6 +79,19 @@ public class drawTest : MonoBehaviour
         testMult.Add(new List<GameObject>());
         undoLists++;
         Debug.Log(testMult.Count + " lists of lists");
+    }
+
+    public void erase()
+    {
+        LayerMask drawnMask = LayerMask.GetMask("DrawnObject");
+        Ray ray = new Ray(Camera.main.ScreenPointToRay(mousePos).origin, Camera.main.ScreenPointToRay(Input.mousePosition).direction);
+
+        if (Physics.Raycast(ray, out hit, Mathf.Infinity, drawnMask) && Input.GetKey(draw))
+        {
+            Debug.DrawLine(ray.origin, hit.point, Color.green, 1.0f);
+            Destroy(hit.collider.gameObject);
+            Debug.Log("Deleted object");
+        }
     }
 
 }
