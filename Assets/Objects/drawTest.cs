@@ -20,9 +20,13 @@ public class drawTest : MonoBehaviour
 
     public int undoLists = 0;
 
+    public GameObject plane;
+
 
     public KeyCode draw = KeyCode.Mouse0;
-    public bool erasing; 
+    public bool erasing;
+
+    public bool stamping;
 
     private void Awake()
     {
@@ -48,9 +52,9 @@ public class drawTest : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
         mousePos = Input.mousePosition;
-        if (!erasing)
+        if (!erasing && !stamping)
         {
             if (Input.GetKey(draw))
             {
@@ -66,9 +70,14 @@ public class drawTest : MonoBehaviour
             }
             else drawing = false;
         }
-        else
+        else if (erasing)
         {
             erase();
+        }
+        else if (stamping)
+        {
+            printCity();
+            
         }
         mousePos.z = hit.point.z;
         Vector3 worldMousePos = Camera.main.ScreenToWorldPoint(mousePos);
@@ -91,6 +100,20 @@ public class drawTest : MonoBehaviour
             Debug.DrawLine(ray.origin, hit.point, Color.green, 1.0f);
             Destroy(hit.collider.gameObject);
             Debug.Log("Deleted object");
+        }
+    }
+
+    public void printCity()
+    {
+         LayerMask mask = LayerMask.GetMask("Globe");
+         Ray ray = new Ray(Camera.main.ScreenPointToRay(mousePos).origin, Camera.main.ScreenPointToRay(Input.mousePosition).direction);
+        if (Physics.Raycast(ray, out hit, Mathf.Infinity, mask) && Input.GetKey(draw))
+        {
+            GameObject drawn = Instantiate(plane, hit.point, Quaternion.identity, transform);
+            testMult[undoLists].Add(drawn);
+            drawn.transform.LookAt(transform.position);
+            drawn.transform.Translate(new Vector3(0,0,-0.05f));
+            stamping = false;
         }
     }
 

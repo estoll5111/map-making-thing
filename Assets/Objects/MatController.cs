@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.InteropServices.WindowsRuntime;
 using System.Security.Cryptography;
 using Unity.Mathematics;
 using Unity.VisualScripting;
@@ -77,6 +78,23 @@ public class MatController : MonoBehaviour
         else
         {
             undotest.erasing = false;
+        }
+    }
+
+    public void printCity()
+    {
+        int x = 0;
+        if (x < 1)
+        {
+            Debug.Log("stamping");
+            undotest.stamping = true;
+            x++;
+        }
+        else
+        {
+            Debug.Log("Stamp mode ended");
+            undotest.stamping = false;
+            return;
         }
     }
 }
