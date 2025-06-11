@@ -14,8 +14,6 @@ public class drawTest : MonoBehaviour
     public RaycastHit hit;
     public GameObject drawSphere;
 
-    private bool drawing;
-
     public List<List<GameObject>> testMult = new List<List<GameObject>>(1);
 
     public int undoLists = 0;
@@ -68,7 +66,6 @@ public class drawTest : MonoBehaviour
                     Debug.DrawLine(ray.origin, hit.point, Color.red, 1.0f);
                 }
             }
-            else drawing = false;
         }
         else if (erasing)
         {
@@ -98,8 +95,14 @@ public class drawTest : MonoBehaviour
         if (Physics.Raycast(ray, out hit, Mathf.Infinity, drawnMask) && Input.GetKey(draw))
         {
             Debug.DrawLine(ray.origin, hit.point, Color.green, 1.0f);
-            Destroy(hit.collider.gameObject);
-            Debug.Log("Deleted object");
+            GameObject eraseCursor = Instantiate(drawSphere, hit.point, Quaternion.identity, transform);
+            Collider[] toDelete = Physics.OverlapBox(eraseCursor.GetComponent<Renderer>().bounds.center, new Vector3(eraseCursor.transform.localScale.x/2, eraseCursor.transform.localScale.y/2, 0.0025f), Quaternion.identity, drawnMask);
+            foreach (Collider x in toDelete)
+            {
+                Destroy(x.gameObject);
+            }
+
+            //Destroy(hit.collider.gameObject);
         }
     }
 

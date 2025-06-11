@@ -19,11 +19,11 @@ public class cameraZoom : MonoBehaviour
   // Update is called once per frame
   void Update()
   {
-    if (Input.GetAxis("Mouse ScrollWheel") > 0f)
+    if (Input.GetAxis("Mouse ScrollWheel") > 0f && FOV >= minFOV)
     {
       FOV--;
     }
-    else if (Input.GetAxis("Mouse ScrollWheel") < 0f)
+    else if (Input.GetAxis("Mouse ScrollWheel") < 0f && FOV <= maxFOV)
     {
       FOV++;
     }
